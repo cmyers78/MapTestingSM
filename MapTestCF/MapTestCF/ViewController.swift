@@ -14,6 +14,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     var locationManager = CLLocationManager()
     
+    var Boxes = [Box]()
     
     
     @IBOutlet weak var mapView: MKMapView!
@@ -24,12 +25,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.distanceFilter = 2000
         //self.locationManager.startUpdatingLocation()
         self.findUserLocation()
         
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    // MARK : Find user location & boxes
+    
     func findUserLocation() {
         
         let status = CLAuthorizationStatus.AuthorizedWhenInUse
@@ -37,6 +40,82 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if status != .Denied {
             self.mapView.showsUserLocation = true
             self.locationManager.requestLocation()
+        }
+    }
+    
+    func findBox() {
+        
+        let request = MKLocalSearchRequest()
+        request.naturalLanguageQuery = "CrossFit"
+        request.region = mapView.region
+        
+        let search = MKLocalSearch(request: request)
+        search.startWithCompletionHandler {
+            (response, error) in
+            
+            if let response = response {
+                for item in response.mapItems {
+                    
+                    let theBox = Box()
+                    
+                    if let name = item.name {
+                        theBox.boxName = name
+                    }
+                    
+                    if let phone = item.phoneNumber {
+                        theBox.boxPhone = phone
+                    }
+                    
+                    //                    if let url = item.url as? String {
+                    //                        theBox.boxURL = url
+                    //                    }
+                    
+                    
+                    //                    print(item.name)
+                    //                    print(item.phoneNumber)
+                    //                    print(item.url)
+                    if let test = item.placemark.addressDictionary?["FormattedAddressLines"] as? NSArray{
+                        if test.count == 3 {
+                            
+                            theBox.boxAddressStreet = test[0] as! String
+                            theBox.boxAddressCSZ = test[1] as! String
+                            theBox.boxAddressCountry = test[2] as! String
+                            
+                        } else {
+                            theBox.boxAddressStreet = test[0] as! String
+                            theBox.boxAddressSuite = test[1]  as! String
+                            theBox.boxAddressCSZ = test[2] as! String
+                            theBox.boxAddressCountry = test[3] as! String
+                        }
+                        
+                        
+                        print(test)
+                    }
+                    
+                    theBox.boxLat = item.placemark.coordinate.latitude
+                    
+                    theBox.boxLong = item.placemark.coordinate.longitude
+                    
+                    
+                    self.Boxes.append(theBox)
+                    
+                    
+                    print()
+                    print(item.placemark.coordinate.latitude)
+                    print(item.placemark.coordinate.longitude)
+                    
+                    print()
+                    print()
+                    
+                    
+                }
+                
+                
+            } else {
+                print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
+                return
+            }
+            
         }
     }
     
@@ -54,8 +133,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     
     // MARK : Delegate methods
-    
-    
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         //self.locationManager.startUpdatingLocation()
@@ -76,6 +153,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.mapView.showsUserLocation = true
             }
         }
+        
+        self.locationManager.startUpdatingLocation()
         
     }
 
