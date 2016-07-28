@@ -25,7 +25,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.distanceFilter = 2000
+        
         //self.locationManager.startUpdatingLocation()
         self.findUserLocation()
         
@@ -46,7 +46,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func findBox() {
         
         let request = MKLocalSearchRequest()
-        request.naturalLanguageQuery = "CrossFit"
+        request.naturalLanguageQuery = "crossfit"
         request.region = mapView.region
         
         let search = MKLocalSearch(request: request)
@@ -66,14 +66,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         theBox.boxPhone = phone
                     }
                     
-                    //                    if let url = item.url as? String {
-                    //                        theBox.boxURL = url
-                    //                    }
-                    
-                    
-                    //                    print(item.name)
-                    //                    print(item.phoneNumber)
-                    //                    print(item.url)
                     if let test = item.placemark.addressDictionary?["FormattedAddressLines"] as? NSArray{
                         if test.count == 3 {
                             
@@ -87,27 +79,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                             theBox.boxAddressCSZ = test[2] as! String
                             theBox.boxAddressCountry = test[3] as! String
                         }
-                        
-                        
-                        print(test)
+
                     }
                     
                     theBox.boxLat = item.placemark.coordinate.latitude
                     
                     theBox.boxLong = item.placemark.coordinate.longitude
                     
-                    
                     self.Boxes.append(theBox)
-                    
-                    
-                    print()
-                    print(item.placemark.coordinate.latitude)
-                    print(item.placemark.coordinate.longitude)
-                    
-                    print()
-                    print()
-                    
-                    
                 }
                 
                 
@@ -115,6 +94,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
                 return
             }
+        }
+    }
+    
+    func dropPin() {
+        for box in self.Boxes {
+            
+            self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName)
             
         }
     }
@@ -145,7 +131,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             let location = locations.first
             print(location?.coordinate.latitude)
             print(location?.coordinate.longitude)
-            let span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+            let span = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
             if let center = location?.coordinate {
                 let region = MKCoordinateRegion(center: center, span: span)
                 
@@ -153,8 +139,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.mapView.showsUserLocation = true
             }
         }
+
+        self.findBox()
         
-        self.locationManager.startUpdatingLocation()
+        // wanted to drop pins after boxes were found automatically...dispatch async didn't really work....
         
     }
 
@@ -162,5 +150,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         print(error.localizedDescription)
     }
 
+    @IBAction func findBoxesPressed(sender: UIBarButtonItem) {
+        
+        self.dropPin()
+    }
 }
 
