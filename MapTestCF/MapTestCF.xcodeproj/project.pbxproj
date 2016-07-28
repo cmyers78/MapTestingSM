@@ -16,6 +16,7 @@
 		C6ABAA5E1D4A5C080087B5B4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ABAA5D1D4A5C080087B5B4 /* MapKit.framework */; };
 		C6ABAA601D4A738B0087B5B4 /* APIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6ABAA5F1D4A738B0087B5B4 /* APIController.swift */; };
 		C6ABAA621D4A73AA0087B5B4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6ABAA611D4A73AA0087B5B4 /* Constants.swift */; };
+		C6ABAA641D4A8E3E0087B5B4 /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6ABAA631D4A8E3E0087B5B4 /* DataStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		C6ABAA5D1D4A5C080087B5B4 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C6ABAA5F1D4A738B0087B5B4 /* APIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIController.swift; sourceTree = "<group>"; };
 		C6ABAA611D4A73AA0087B5B4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C6ABAA631D4A8E3E0087B5B4 /* DataStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,15 +68,32 @@
 			children = (
 				C6ABAA611D4A73AA0087B5B4 /* Constants.swift */,
 				C66C09131D49175B0071A003 /* AppDelegate.swift */,
-				C66C09151D49175B0071A003 /* ViewController.swift */,
-				C6ABAA5F1D4A738B0087B5B4 /* APIController.swift */,
-				C66C09251D4933040071A003 /* Box.swift */,
+				C6ABAA661D4A8E5C0087B5B4 /* Controller */,
+				C6ABAA651D4A8E4F0087B5B4 /* Model */,
 				C66C09171D49175B0071A003 /* Main.storyboard */,
 				C66C091A1D49175B0071A003 /* Assets.xcassets */,
 				C66C091C1D49175B0071A003 /* LaunchScreen.storyboard */,
 				C66C091F1D49175B0071A003 /* Info.plist */,
 			);
 			path = MapTestCF;
+			sourceTree = "<group>";
+		};
+		C6ABAA651D4A8E4F0087B5B4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C6ABAA631D4A8E3E0087B5B4 /* DataStorage.swift */,
+				C66C09251D4933040071A003 /* Box.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C6ABAA661D4A8E5C0087B5B4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C66C09151D49175B0071A003 /* ViewController.swift */,
+				C6ABAA5F1D4A738B0087B5B4 /* APIController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +175,7 @@
 				C6ABAA621D4A73AA0087B5B4 /* Constants.swift in Sources */,
 				C6ABAA601D4A738B0087B5B4 /* APIController.swift in Sources */,
 				C66C09261D4933040071A003 /* Box.swift in Sources */,
+				C6ABAA641D4A8E3E0087B5B4 /* DataStorage.swift in Sources */,
 				C66C09161D49175B0071A003 /* ViewController.swift in Sources */,
 				C66C09141D49175B0071A003 /* AppDelegate.swift in Sources */,
 			);

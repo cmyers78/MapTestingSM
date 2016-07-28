@@ -45,6 +45,10 @@ class APIController: NSObject {
                         theBox.boxPhone = phone
                     }
                     
+                    if let webAddress = item.url {
+                        theBox.boxURL = webAddress
+                    }
+                    
                     if let test = item.placemark.addressDictionary?["FormattedAddressLines"] as? NSArray{
                         if test.count == 3 {
                             
@@ -65,14 +69,16 @@ class APIController: NSObject {
                     
                     theBox.boxLong = item.placemark.coordinate.longitude
                     
-                    print()
-                    print(theBox.boxName)
-                    print(theBox.boxAddressStreet)
-                    print()
+                    DataStorage.sharedInstance.addMKBox(theBox)
                     
-                    //self.Boxes.append(theBox)
+//                    print()
+//                    print(theBox.boxName)
+//                    print(theBox.boxAddressStreet)
+//                    print()
                 }
                 
+                // Now call get google
+                self.fetchGoogleBox()
                 
             } else {
                 print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
@@ -124,17 +130,17 @@ class APIController: NSObject {
                                 }
                             
                             }
-                            print(aBox.boxName)
-                            print(aBox.boxLat)
-                            print(aBox.boxLong)
-                            print()
-                            print()
+//                            print(aBox.boxName)
+//                            print(aBox.boxLat)
+//                            print(aBox.boxLong)
+//                            print()
+//                            print()
                             
-                            // add box to the data store
+                            DataStorage.sharedInstance.addGoogleBox(aBox)
                         }
                     }
                     
-            
+              // postNotfication
                     
                 } else {
                     print("I could not parse the dictionary")

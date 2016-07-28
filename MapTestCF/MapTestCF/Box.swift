@@ -12,7 +12,7 @@ class Box: NSObject {
 
     var boxName : String = ""
     var boxPhone : String = ""
-    //var boxURL : NSURL
+    var boxURL : NSURL?
     var boxAddressStreet : String = ""
     var boxAddressSuite : String = ""
     var boxAddressCSZ : String = ""
@@ -25,7 +25,6 @@ class Box: NSObject {
         
         self.boxName = ""
         self.boxPhone = ""
-        //self.boxURL =
         self.boxAddressStreet = ""
         self.boxAddressSuite = ""
         self.boxAddressCSZ = ""
