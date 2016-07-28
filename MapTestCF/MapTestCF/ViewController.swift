@@ -16,15 +16,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     var Boxes = [Box]()
     
+    let controller = APIController()
     
     @IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        controller.fetchGoogleBox()
+        controller.findMKBox(40.595726, long: -111.9094405)
+    
+        
+        
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.requestAlwaysAuthorization()
         
         //self.locationManager.startUpdatingLocation()
         self.findUserLocation()
@@ -35,7 +41,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func findUserLocation() {
         
-        let status = CLAuthorizationStatus.AuthorizedWhenInUse
+        let status = CLAuthorizationStatus.AuthorizedAlways
         
         if status != .Denied {
             self.mapView.showsUserLocation = true
@@ -43,59 +49,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-    func findBox() {
-        
-        let request = MKLocalSearchRequest()
-        request.naturalLanguageQuery = "crossfit"
-        request.region = mapView.region
-        
-        let search = MKLocalSearch(request: request)
-        search.startWithCompletionHandler {
-            (response, error) in
-            
-            if let response = response {
-                for item in response.mapItems {
-                    
-                    let theBox = Box()
-                    
-                    if let name = item.name {
-                        theBox.boxName = name
-                    }
-                    
-                    if let phone = item.phoneNumber {
-                        theBox.boxPhone = phone
-                    }
-                    
-                    if let test = item.placemark.addressDictionary?["FormattedAddressLines"] as? NSArray{
-                        if test.count == 3 {
-                            
-                            theBox.boxAddressStreet = test[0] as! String
-                            theBox.boxAddressCSZ = test[1] as! String
-                            theBox.boxAddressCountry = test[2] as! String
-                            
-                        } else {
-                            theBox.boxAddressStreet = test[0] as! String
-                            theBox.boxAddressSuite = test[1]  as! String
-                            theBox.boxAddressCSZ = test[2] as! String
-                            theBox.boxAddressCountry = test[3] as! String
-                        }
 
-                    }
-                    
-                    theBox.boxLat = item.placemark.coordinate.latitude
-                    
-                    theBox.boxLong = item.placemark.coordinate.longitude
-                    
-                    self.Boxes.append(theBox)
-                }
-                
-                
-            } else {
-                print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
-                return
-            }
-        }
-    }
     
     func dropPin() {
         for box in self.Boxes {
@@ -131,7 +85,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             let location = locations.first
             print(location?.coordinate.latitude)
             print(location?.coordinate.longitude)
-            let span = MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
+            let span = MKCoordinateSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
             if let center = location?.coordinate {
                 let region = MKCoordinateRegion(center: center, span: span)
                 
@@ -139,9 +93,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.mapView.showsUserLocation = true
             }
         }
-
-        self.findBox()
         
+        //self.findBox()
         // wanted to drop pins after boxes were found automatically...dispatch async didn't really work....
         
     }
