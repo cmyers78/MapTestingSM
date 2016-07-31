@@ -26,11 +26,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //controller.fetchGoogleBox()
         controller.findMKBox(40.595726, long: -111.9094405)
         
-        let lat = 40.595726
-        let long = -111.9094405
-        
-        DataStorage.sharedInstance.reverseGeoCoding(lat, longitude: long)
-        
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestAlwaysAuthorization()
