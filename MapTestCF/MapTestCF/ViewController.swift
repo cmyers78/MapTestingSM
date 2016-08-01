@@ -23,7 +23,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //controller.fetchGoogleBox()
+        controller.fetchGoogleBox()
         controller.findMKBox(40.595726, long: -111.9094405)
         
         self.locationManager.delegate = self

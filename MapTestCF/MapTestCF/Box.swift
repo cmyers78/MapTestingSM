@@ -34,4 +34,16 @@ class Box: NSObject {
         
     
     }
+    
+    func logItems() {
+        print(self.boxName)
+        print(self.boxPhone)
+        print(self.boxAddressStreet)
+        print(self.boxAddressSuite)
+        print(self.boxAddressCSZ)
+        print(self.boxAddressCountry)
+        print(self.boxLat)
+        print(self.boxLong)
+        print(self.boxURL)
+    }
 }

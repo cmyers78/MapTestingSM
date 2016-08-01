@@ -92,6 +92,8 @@ class DataStorage: NSObject {
                             theBox.boxName = name
                         }
                         
+                        print(theBox.boxName)
+                        
                         if let phone = item.phoneNumber {
                             theBox.boxPhone = phone
                         }
@@ -100,8 +102,14 @@ class DataStorage: NSObject {
                             theBox.boxURL = webAddress
                         }
                         
+                        var foundAddress = true
+                        
                         if let test = item.placemark.addressDictionary?["FormattedAddressLines"] as? NSArray{
-                            if test.count == 3 {
+                            
+                            if test.count < 3 {
+                                foundAddress = false
+                            }
+                            else if test.count == 3 {
                                 
                                 theBox.boxAddressStreet = test[0] as! String
                                 theBox.boxAddressCSZ = test[1] as! String
@@ -119,10 +127,13 @@ class DataStorage: NSObject {
                         
                         theBox.boxLong = item.placemark.coordinate.longitude
                         
-                        
-                        self.boxesArray.append(theBox)
-                        print("The box added is: \(theBox.boxName)")
-                        
+                        if foundAddress == true {
+                            self.boxesArray.append(theBox)
+                            theBox.logItems()
+                            print()
+                            
+                            //print("The box added is: \(theBox.boxName)")
+                        }
                         //self.googleArray.removeAtIndex(DataStorage.sharedInstance.googleBoxAtIndex(theBox))
                         // remove from google array
                         

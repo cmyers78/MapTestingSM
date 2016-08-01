@@ -90,6 +90,9 @@ class APIController: NSObject {
     
     func fetchGoogleBox(/* will add latitude and longitude parameters later*/) {
         
+        let initialCount = DataStorage.sharedInstance.numberOfBoxes()
+        print(initialCount)
+        
         let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.564978,-111.838973&radius=15000&key=AIzaSyBwcr7URkxBOGP_YrC-e61a6I2qTjeyMII&keyword=crossfit"
         
         if let url = NSURL(string: urlString) {
@@ -130,14 +133,19 @@ class APIController: NSObject {
                                 }
                             
                             }
-//                            print(aBox.boxName)
-//                            print(aBox.boxLat)
-//                            print(aBox.boxLong)
-//                            print()
-//                            print()
+                            print(aBox.boxName)
+                            print(aBox.boxLat)
+                            print(aBox.boxLong)
+                            print()
+                            print()
                             
                             DataStorage.sharedInstance.addGoogleBox(aBox)
                         }
+                        
+                        DataStorage.sharedInstance.parseGoogleBoxes()
+                        
+                        let finalCount = DataStorage.sharedInstance.numberOfBoxes()
+                        print(finalCount)
                     }
                     
               // postNotfication
