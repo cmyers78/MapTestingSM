@@ -26,7 +26,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         super.viewDidLoad()
         
         controller.fetchGoogleBox()
-        controller.findMKBox(40.595726, long: -111.9094405)
+        controller.findMKBox(40.233844, long: -111.658534)
         
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -35,6 +35,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //self.locationManager.startUpdatingLocation()
         self.findUserLocation()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dropPin), name: kNOTIFY, object: nil)
         
         // add obvserver and call function
         // Do any additional setup after loading the view, typically from a nib.
@@ -54,10 +55,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
     
     func dropPin() {
-        for box in self.Boxes {
+        print("drop pin called")
+        for box in DataStorage.sharedInstance.boxesArray {
             
             self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName)
             
+        
         }
     }
     

@@ -19,7 +19,7 @@ class DataStorage: NSObject {
         
     }
     
-    private var boxesArray = [Box]()
+    var boxesArray = [Box]()
     
     private var googleArray = [Box]()
     
@@ -28,8 +28,8 @@ class DataStorage: NSObject {
         print(box.boxName + " MK")
     }
     
-    func removeBoxes() {
-        self.boxesArray.removeAll()
+    func removeGoogleBoxes() {
+        self.googleArray.removeAll()
     }
     
     func numberOfBoxes() -> Int {
@@ -73,7 +73,6 @@ class DataStorage: NSObject {
     
     func parseGoogleBoxes() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(countUp), name: "CountUp", object: nil)
         
         for box in googleArray {
             
@@ -136,7 +135,7 @@ class DataStorage: NSObject {
                             theBox.logItems()
                             print()
                             
-                            NSNotificationCenter.defaultCenter().postNotificationName("countUp", object: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName(kNOTIFY, object: nil)
                             // add notification here - post notification here
                             //print("The box added is: \(theBox.boxName)")
                         }
