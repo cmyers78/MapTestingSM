@@ -34,7 +34,7 @@ class DataStorage: NSObject {
         return self.boxesArray.count
     }
     
-    func boxAtIndex(index : Int) -> Box? {
+    func googleBoxAtIndex(index : Int) -> Box? {
         if self.googleArray.count >= 0 && index < self.googleArray.count {
             return self.googleArray[index]
         }
@@ -123,7 +123,7 @@ class DataStorage: NSObject {
                         self.boxesArray.append(theBox)
                         print("The box added is: \(theBox.boxName)")
                         
-                        
+                        //self.googleArray.removeAtIndex(DataStorage.sharedInstance.googleBoxAtIndex(theBox))
                         // remove from google array
                         
                     } else {
