@@ -12,6 +12,8 @@ import CoreLocation
 
 class DataStorage: NSObject {
     
+    var collected : Int = 0
+    
     static let sharedInstance = DataStorage()
     private override init() {
         
@@ -34,9 +36,9 @@ class DataStorage: NSObject {
         return self.boxesArray.count
     }
     
-    func googleBoxAtIndex(index : Int) -> Box? {
-        if self.googleArray.count >= 0 && index < self.googleArray.count {
-            return self.googleArray[index]
+    func boxesAtIndex(index : Int) -> Box? {
+        if self.boxesArray.count >= 0 && index < self.boxesArray.count {
+            return self.boxesArray[index]
         }
         return nil
     }
@@ -70,6 +72,8 @@ class DataStorage: NSObject {
     }
     
     func parseGoogleBoxes() {
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(countUp), name: "CountUp", object: nil)
         
         for box in googleArray {
             
@@ -132,10 +136,11 @@ class DataStorage: NSObject {
                             theBox.logItems()
                             print()
                             
+                            NSNotificationCenter.defaultCenter().postNotificationName("countUp", object: nil)
+                            // add notification here - post notification here
                             //print("The box added is: \(theBox.boxName)")
                         }
-                        //self.googleArray.removeAtIndex(DataStorage.sharedInstance.googleBoxAtIndex(theBox))
-                        // remove from google array
+                        
                         
                     } else {
                         print("Search results not found for: \(box.boxName)")
@@ -146,13 +151,25 @@ class DataStorage: NSObject {
                     print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
                     return
                 }
-                
             }
+        }
+        
+    }
+    
+    func countUp() {
+        print("count up called")
+        collected = collected + 1
+        print("collected count == \(collected)")
+        
+        // Check the count of collected data and compare it with the count of your google Array.
+        
+        if collected == self.googleArray.count {
+            print("we are finished! Maybe send final Notiication?")
         }
         
         
     }
-    
+
     // loop through the array and compare the box at index with the google box name
     // if equality is true, skip
     // if equality is not true, add the box to the array

@@ -8,3 +8,6 @@
 
 typealias JSONDictionary = [String : AnyObject]
 typealias JSONArray = [JSONDictionary]
+
+let kNOTIFY = "kNOTIFY"
+

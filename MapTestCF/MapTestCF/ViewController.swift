@@ -12,6 +12,8 @@ import CoreLocation
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
+    var collected : Int = 0
+    
     var locationManager = CLLocationManager()
     
     var Boxes = [Box]()
@@ -33,6 +35,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         //self.locationManager.startUpdatingLocation()
         self.findUserLocation()
         
+        
+        // add obvserver and call function
         // Do any additional setup after loading the view, typically from a nib.
     }
     // MARK : Find user location & boxes
