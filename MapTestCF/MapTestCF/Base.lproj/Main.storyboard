@@ -32,13 +32,7 @@
                             <constraint firstAttribute="trailing" secondItem="8kt-bn-4Cm" secondAttribute="trailing" id="ly5-Nc-N6V"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="D5J-Ny-64H">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="9jW-uT-9v6">
-                            <connections>
-                                <action selector="findBoxesPressed:" destination="BYZ-38-t0r" id="Nj2-XY-p18"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="D5J-Ny-64H"/>
                     <connections>
                         <outlet property="mapView" destination="8kt-bn-4Cm" id="zv4-fg-IeX"/>
                     </connections>

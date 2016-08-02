@@ -154,23 +154,4 @@ class DataStorage: NSObject {
         }
         
     }
-    
-    func countUp() {
-        print("count up called")
-        collected = collected + 1
-        print("collected count == \(collected)")
-        
-        // Check the count of collected data and compare it with the count of your google Array.
-        
-        if collected == self.googleArray.count {
-            print("we are finished! Maybe send final Notiication?")
-        }
-        
-        
-    }
-
-    // loop through the array and compare the box at index with the google box name
-    // if equality is true, skip
-    // if equality is not true, add the box to the array
-    
 }

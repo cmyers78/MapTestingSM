@@ -58,7 +58,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         print("drop pin called")
         for box in DataStorage.sharedInstance.boxesArray {
             
-            self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName)
+            self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName, address: box.boxAddressStreet + " " + box.boxAddressCSZ)
             
         
         }
@@ -66,12 +66,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     // MARK : Annotations
     
-    func addPin(pinLat : Double, pinLong : Double, title : String) {
+    func addPin(pinLat : Double, pinLong : Double, title : String, address : String) {
         
         let location = CLLocationCoordinate2D(latitude: pinLat, longitude: pinLong)
         let annotation = MKPointAnnotation()
         annotation.coordinate = location
         annotation.title = title
+        annotation.subtitle = address
+
         
         self.mapView.addAnnotation(annotation)
     }
@@ -99,18 +101,35 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             }
         }
         
-        //self.findBox()
-        // wanted to drop pins after boxes were found automatically...dispatch async didn't really work....
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
+        
+        if annotation.isKindOfClass(CustomBoxMKPointAnnotation) {
+            let identifier = "kettleBell"
+            
+            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            
+            
+            annotationView.canShowCallout = true
+            
+            let imageView = UIImageView(frame: CGRectMake(0, 0, 44, 44))
+            imageView.contentMode = .ScaleAspectFit
+            
+            imageView.image = UIImage(named: "kettleBell")
+            
+            annotationView.image = imageView.image
+            
+            return annotationView
+            
+        }
+        return nil
     }
 
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print(error.localizedDescription)
     }
 
-    @IBAction func findBoxesPressed(sender: UIBarButtonItem) {
-        
-        self.dropPin()
-    }
 }
 
