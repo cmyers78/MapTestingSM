@@ -69,7 +69,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func addPin(pinLat : Double, pinLong : Double, title : String, address : String) {
         
         let location = CLLocationCoordinate2D(latitude: pinLat, longitude: pinLong)
-        let annotation = MKPointAnnotation()
+        let annotation = CustomBoxMKPointAnnotation()
         annotation.coordinate = location
         annotation.title = title
         annotation.subtitle = address
@@ -114,10 +114,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             annotationView.canShowCallout = true
             
-            let imageView = UIImageView(frame: CGRectMake(0, 0, 44, 44))
+            let imageView = UIImageView(frame: CGRectMake(0, 0, 24, 24))
             imageView.contentMode = .ScaleAspectFit
             
-            imageView.image = UIImage(named: "kettleBell")
+            imageView.image = UIImage(named: "kettlebellx24")
             
             annotationView.image = imageView.image
             
