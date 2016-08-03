@@ -14,6 +14,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     var collected : Int = 0
     
+    var selectedPin : MKPlacemark? = nil
+    
     var locationManager = CLLocationManager()
     
     var Boxes = [Box]()
@@ -109,22 +111,46 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         if annotation.isKindOfClass(CustomBoxMKPointAnnotation) {
             let identifier = "kettleBell"
             
-            let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
             
             
-            annotationView.canShowCallout = true
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             
-            let imageView = UIImageView(frame: CGRectMake(0, 0, 24, 24))
-            imageView.contentMode = .ScaleAspectFit
-            
-            imageView.image = UIImage(named: "kettlebellx24")
-            
-            annotationView.image = imageView.image
-            
-            return annotationView
-            
+            if let annotationView = annotationView {
+                
+                annotationView.canShowCallout = true
+                
+                let imageView = UIImageView(frame: CGRectMake(0, 0, 24, 24))
+                imageView.contentMode = .ScaleAspectFit
+                
+                imageView.image = UIImage(named: "kettlebellx24")
+                
+                let smallSquare = CGSize(width: 30, height: 30)
+                let button = UIButton(frame: CGRect(origin: CGPointZero, size: smallSquare))
+                button.setBackgroundImage(UIImage(named: "carX32"), forState: .Normal)
+                button.addTarget(self, action: #selector(self.getDirections), forControlEvents: .TouchUpInside)
+                annotationView.leftCalloutAccessoryView = button
+                
+                annotationView.image = imageView.image
+                
+                return annotationView
+            }
         }
         return nil
+    }
+    
+    func getDirections() {
+        
+        
+        if let selectedPin = self.selectedPin {
+            print("button tapped")
+            let mapItem = MKMapItem(placemark: selectedPin)
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+            
+            mapItem.openInMapsWithLaunchOptions(launchOptions)
+            
+        }
+        
     }
 
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
