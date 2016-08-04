@@ -12,13 +12,9 @@ import CoreLocation
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
-    var collected : Int = 0
-    
     var selectedPin : MKPlacemark? = nil
     
     var locationManager = CLLocationManager()
-    
-    var Boxes = [Box]()
     
     let controller = APIController()
     
@@ -60,6 +56,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         print("drop pin called")
         for box in DataStorage.sharedInstance.boxesArray {
             
+            
             self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName, address: box.boxAddressStreet + " " + box.boxAddressCSZ)
             
         
@@ -75,6 +72,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         annotation.coordinate = location
         annotation.title = title
         annotation.subtitle = address
+        
 
         
         self.mapView.addAnnotation(annotation)
@@ -140,17 +138,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func getDirections() {
+        print("button tapped")
         
-        
-        if let selectedPin = self.selectedPin {
-            print("button tapped")
-            let mapItem = MKMapItem(placemark: selectedPin)
-            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
-            
-            mapItem.openInMapsWithLaunchOptions(launchOptions)
-            
-        }
-        
+        let coordinate = CLLocationCoordinate2DMake(/*I need to grab the lat and long of whichever kettlebell is selected*/)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
+        mapItem.name = "Target location"
+        mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
     }
 
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
