@@ -13,13 +13,14 @@ import CoreLocation
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var selectedPin : MKPlacemark? = nil
+    var mapName : String = ""
     
     var locationManager = CLLocationManager()
     
     let controller = APIController()
     
     @IBOutlet weak var mapView: MKMapView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,7 +51,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
-
+    
     
     func dropPin() {
         print("drop pin called")
@@ -59,7 +60,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             
             self.addPin(box.boxLat, pinLong: box.boxLong, title: box.boxName, address: box.boxAddressStreet + " " + box.boxAddressCSZ)
             
-        
+            
         }
     }
     
@@ -73,11 +74,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         annotation.title = title
         annotation.subtitle = address
         
-
+        
         
         self.mapView.addAnnotation(annotation)
     }
-
+    
     
     // MARK : Delegate methods
     
@@ -92,7 +93,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             let location = locations.first
             print(location?.coordinate.latitude)
             print(location?.coordinate.longitude)
-            let span = MKCoordinateSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
+            let span = MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
             if let center = location?.coordinate {
                 let region = MKCoordinateRegion(center: center, span: span)
                 
@@ -139,24 +140,43 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         
-        print("POPUP ANNOTATE")
+        //print("POPUP ANNOTATE")
         // I need to set selectedPin equal to the pin's coordinates
-        
+        if let coordinate = view.annotation?.coordinate {
+            
+            let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: nil)
+            self.selectedPin = placemark
+            
+            if let mName = view.annotation?.title {
+                self.mapName = mName!
+            }
+        }
         
     }
     
     func getDirections() {
         print("button tapped")
-//        
-//        let coordinate = CLLocationCoordinate2DMake(/*I need to grab the lat and long of whichever kettlebell is selected*/)
-//        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-//        mapItem.name = "Target location"
-//        mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+        
+        
+        let mapItem = MKMapItem(placemark: self.selectedPin!)
+        mapItem.name = self.mapName
+        if let lat = self.selectedPin?.coordinate.latitude, long = self.selectedPin?.coordinate.longitude {
+            
+            let regionDistance : CLLocationDistance = 7500
+            
+            let coord = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
+            let regionSpan = MKCoordinateRegionMakeWithDistance(coord, regionDistance, regionDistance)
+            
+            let options = [MKLaunchOptionsMapCenterKey: NSValue(MKCoordinate: regionSpan.center), MKLaunchOptionsMapSpanKey: NSValue(MKCoordinateSpan: regionSpan.span), MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving ]
+            
+            mapItem.openInMapsWithLaunchOptions(options)
+        }
     }
-
+    
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print(error.localizedDescription)
     }
-
+    
 }
 
