@@ -137,13 +137,21 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return nil
     }
     
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        
+        print("POPUP ANNOTATE")
+        // I need to set selectedPin equal to the pin's coordinates
+        
+        
+    }
+    
     func getDirections() {
         print("button tapped")
-        
-        let coordinate = CLLocationCoordinate2DMake(/*I need to grab the lat and long of whichever kettlebell is selected*/)
-        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-        mapItem.name = "Target location"
-        mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+//        
+//        let coordinate = CLLocationCoordinate2DMake(/*I need to grab the lat and long of whichever kettlebell is selected*/)
+//        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
+//        mapItem.name = "Target location"
+//        mapItem.openInMapsWithLaunchOptions([MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
     }
 
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
